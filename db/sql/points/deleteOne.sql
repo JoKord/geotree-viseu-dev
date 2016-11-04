@@ -1,0 +1,5 @@
+/*
+	SQL QUERY FOR DELETING ONE TREE BY ID
+*/
+DELETE FROM test.points 
+WHERE id=${id^}

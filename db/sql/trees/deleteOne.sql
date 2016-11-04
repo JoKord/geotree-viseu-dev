@@ -1,7 +1,0 @@
-/*
-	SQL QUERY FOR DELETING ONE TREE BY ID
-*/
-
-DELETE FROM test.tree 
-WHERE id=${id^}
-RETURNING id

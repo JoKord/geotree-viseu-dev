@@ -6,9 +6,7 @@ var promise = require('bluebird');
 // Loading all the database repositories separately,
 // because event 'extend' is called multiple times:
 var repos = {
-    trees: require('./repos/trees'),
-    users: require('./repos/users'),
-    permissions: require('./repos/permissions')
+    points: require('./repos/points'),
 };
 // pg-promise initialization options:
 var options = {
@@ -20,9 +18,7 @@ var options = {
         //    and transaction being executed, which should be as fast as possible.
         // 2. We pass in `pgp` in case it is needed when implementing the repository;
         //    for example, to access namespaces `.as` or `.helpers`
-        obj.trees = repos.trees(obj, pgp);
-        obj.users = repos.users(obj, pgp);
-        obj.permissions = repos.permissions(obj, pgp);
+        obj.points = repos.points(obj, pgp);
     }
 };
 // Database connection parameters:

@@ -14,8 +14,6 @@ var pgp = require('./db').pgp;
 var QueryResultError = pgp.errors.QueryResultError;
 var qrec = pgp.errors.queryResultErrorCode;
 
-var routes = require('./routes/index');
-
 var app = express();
 app.locals.AppName = "Geotree Web App";
 
@@ -31,7 +29,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+var index = require('./routes/index');
+var points = require('./routes/points');
+
+app.use('/', index);
+app.use('/api/points', points);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -45,6 +47,7 @@ app.use(function(req, res, next) {
 // will print stacktrace
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
+    console.log(err);
     if(err instanceof QueryResultError){
       if(err.code == qrec.noData){
         res.status(500);
