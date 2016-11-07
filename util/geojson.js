@@ -1,5 +1,12 @@
 'use strict'
 let gj = require('geojson');
 module.exports = {
-	parseGeoJSON: (req, res, next) => gj.parse(res.body, {Point: ['lat','lng']}),
+	parsePoint: (req, res, next) => {
+		res.locals.data = gj.parse(res.locals.data, {Point: ['lat', 'lng']});
+		next();
+	},
+	parsePoints: (req, res, next) => {
+		res.locals.data = gj.parse(res.locals.data, {Point: ['lat', 'lng']});
+		next();
+	}
 }
