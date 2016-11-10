@@ -47,5 +47,13 @@ module.exports = {
         deleteOne: sql('points/deleteOne.sql'),
         updateOne: sql('points/updateOne.sql'),
         patchOne: require(path.join(__dirname, 'points/patchOne'))
+    },
+    trees: {
+        findAll: sql('trees/findAll.sql'),
+        findOne: sql('trees/findOne.sql'),
+        insertOne: sql('trees/insertOne.sql'),
+        archiveOne: sql('trees/archiveOne.sql'),
+        updateOne: sql('trees/updateOne.sql'),
+        patchOne: require(path.join(__dirname, 'trees/patchOne'))
     }
 };

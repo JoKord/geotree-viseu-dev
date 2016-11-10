@@ -7,6 +7,7 @@ var promise = require('bluebird');
 // because event 'extend' is called multiple times:
 var repos = {
     points: require('./repos/points'),
+    trees: require('./repos/trees')
 };
 // pg-promise initialization options:
 var options = {
@@ -19,6 +20,7 @@ var options = {
         // 2. We pass in `pgp` in case it is needed when implementing the repository;
         //    for example, to access namespaces `.as` or `.helpers`
         obj.points = repos.points(obj, pgp);
+        obj.trees = repos.trees(obj, pgp);
     }
 };
 // Database connection parameters:

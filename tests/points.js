@@ -1,11 +1,9 @@
 'use strict'
-
-const express = require('express');
-const assert = require('assert');
-const supertest = require('supertest');
-var request = supertest.agent("http://localhost:3000");
-
-const validator = require('geojson-validation');
+let express = require('express');
+let assert = require('assert');
+let supertest = require('supertest');
+let request = supertest.agent("http://localhost:3000");
+let validator = require('geojson-validation');
 
 // Testing the Routes
 describe('Routes', function(){

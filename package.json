@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "start": "supervisor ./bin/www",
-    "testPoints": "mocha ./tests/points.js",
-    "testTrees": "mocha ./tests/trees.js"
+    "test": "mocha ./tests/trees.js"
   },
   "dependencies": {
     "assert": "^1.4.1",

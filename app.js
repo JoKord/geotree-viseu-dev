@@ -1,9 +1,11 @@
 'use strict'
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+
+let fRot = require('file-stream-rotator'); 
+let accessLogStream = fRot.getStream({filename:__dirname + "/log/access-%DATE%.log", frequency:"daily", verbose: false, date_format: "YYYY-MM-DD"});
+var errorLogStream = fRot.getStream({filename:__dirname + "/log/error-%DATE%.log", frequency:"daily", verbose: false, date_format: "YYYY-MM-DD"});
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -23,21 +25,24 @@ app.set('view engine', 'handlebars');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+
+// - Production Code -
+//app.use(require('morgan')('[:date][:remote-addr] - :method :url - (:status) :response-time', {stream: accessLogStream}));
+//app.use(require('morgan')('[:date][:remote-addr] - :method :url - (:status) :response-time', {stream: errorLogStream, skip:(req, res) => {return res.statusCode < 400}}));
+
+// - Development Code -
+app.use(require('morgan')('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var index = require('./routes/index');
-var points = require('./routes/points');
-
-app.use('/', index);
-app.use('/api/points', points);
+app.use('/', require('./routes/index'));
+app.use('/api', [require('./routes/points'), require('./routes/trees')]);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  console.log("NOT FOUND ERROR");
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -49,6 +54,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     if(err instanceof QueryResultError){
+      console.log(err);
       if(err.code == qrec.noData){
         res.status(500);
         res.render('error', {
@@ -57,6 +63,7 @@ if (app.get('env') === 'development') {
         });
       }
     } else{
+      console.log(err);
       res.status(err.status || 500).json(err);  
     }
   });

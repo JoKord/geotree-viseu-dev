@@ -19,7 +19,7 @@ module.exports = {
 			});
 		});
 	},
-	isValidResource: (req, res, next) => {
+	validatePoint: (req, res, next) => {
 		let point = req.body;
 		let err = new Error();
 		err.status = 422;
@@ -34,5 +34,37 @@ module.exports = {
 		if(err.message)
 			next(err);
 		next();
+	},
+	validateTreeFull: (req, res, next) => {
+		let tree = req.body;
+		let err = new Error();
+		err.status = 422;
+		if(!tree.hasOwnProperty('id') || typeof tree.id !== "number")
+			err.message = 'Problem found with Tree.id property';
+		if(!tree.hasOwnProperty('id_point') || typeof tree.id_point !== "number")
+			err.message = 'Problem found with Tree.id_point property';
+		if(!tree.hasOwnProperty('state') || typeof tree.state !== "string")
+			err.message = 'Problem found with Tree.status property';
+		if(!tree.hasOwnProperty('isAlive') || typeof tree.isAlive !== "boolean")
+			err.message = 'Problem found with Tree.isAlive property';
+		if(err.message)
+			next(err);
+		next();	
+	},
+	validateTree: (req, res, next) => {
+		let tree = req.body;
+		let err = new Error();
+		err.status = 422;
+		if(tree.hasOwnProperty('id') && typeof tree.id !== "number")
+			err.message = 'Problem found with Tree.id property';
+		if(tree.hasOwnProperty('id_point') && typeof tree.id_point !== "number")
+			err.message = 'Problem found with Tree.id_point property';
+		if(tree.hasOwnProperty('state') && typeof tree.state !== "string")
+			err.message = 'Problem found with Tree.status property';
+		if(tree.hasOwnProperty('isAlive') & typeof tree.isAlive !== "boolean")
+			err.message = 'Problem found with Tree.isAlive property';
+		if(err.message)
+			next(err);
+		next();	
 	}
 };
